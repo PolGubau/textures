@@ -1,53 +1,64 @@
+// React hooks usados por el componente
 import { useEffect, useRef, useState } from 'react';
+// GSAP para animaciones y SplitText para animar líneas de texto
 import gsap from 'gsap';
 import { SplitText } from 'gsap/SplitText';
 
+// Registramos el plugin de SplitText una vez
 gsap.registerPlugin(SplitText);
 
+// Tipos/Interfaces: definen la forma de datos que usa el componente
 interface Source {
-    src: string;
-    caption: string;
+    src: string; // ruta o nombre de la imagen (se usa con `/img/${src}`)
+    caption: string; // texto descriptivo que aparece sobre/junto a la imagen
 }
 
 interface Data {
-    x: number;
-    y: number;
-    w: number;
-    h: number;
+    x: number; // posición X de diseño (valor relativo que se escala)
+    y: number; // posición Y de diseño
+    w: number; // ancho de diseño
+    h: number; // alto de diseño
 }
 
 interface InfiniteGridProps {
-    sources: Source[];
-    data: Data[];
-    originalSize: { w: number; h: number };
+    sources: Source[]; // lista de imágenes/captions
+    data: Data[]; // layout original con posiciones y tamaños
+    originalSize: { w: number; h: number }; // referencia de tamaño original
 }
 
+// Representación interna de cada tile creado en el DOM
 interface Item {
-    el: HTMLDivElement;
-    img: HTMLImageElement;
-    x: number;
-    y: number;
-    w: number;
-    h: number;
-    extraX: number;
-    extraY: number;
-    rect: DOMRect;
-    ease: number;
+    el: HTMLDivElement; // contenedor del tile en el DOM
+    img: HTMLImageElement; // elemento <img> real usado
+    x: number; // posición X actual (en px) antes de aplicar extraX
+    y: number; // posición Y actual (en px)
+    w: number; // ancho en px
+    h: number; // alto en px
+    extraX: number; // desplazamiento extra usado para el wrapping infinito
+    extraY: number; // idem en Y
+    rect: DOMRect; // rectángulo calculado del elemento (para efectos/parallax)
+    ease: number; // factor de easing individual para variaciones
 }
 
 const InfiniteGrid: React.FC<InfiniteGridProps> = ({ sources, data, originalSize }) => {
+    // Referencia al contenedor donde se inyectan los tiles (manipulación DOM directa)
     const containerRef = useRef<HTMLDivElement>(null);
+    // Estado del popup que muestra la imagen grande al hacer click
     const [popup, setPopup] = useState<{ src: string; caption: string } | null>(null);
+    // Refs para animar el popup con GSAP
     const popupImageRef = useRef<HTMLImageElement>(null);
     const overlayRef = useRef<HTMLDivElement>(null);
 
+    // Efecto que se ejecuta cuando `popup` cambia: animaciones de entrada
     useEffect(() => {
         if (popup && popupImageRef.current && overlayRef.current) {
+            // Fade-in del overlay
             gsap.fromTo(
                 overlayRef.current,
                 { opacity: 0 },
                 { opacity: 1, duration: 0.3, ease: 'power2.out' }
             );
+            // Zoom + fade-in de la imagen del popup
             gsap.fromTo(
                 popupImageRef.current,
                 { scale: 0.8, opacity: 0 },
@@ -59,39 +70,49 @@ const InfiniteGrid: React.FC<InfiniteGridProps> = ({ sources, data, originalSize
     useEffect(() => {
         const el = containerRef.current!;
         const initialize = () => {
+            // Medidas de la ventana actuales (se recalculan al inicializar)
             const winW = window.innerWidth;
             const winH = window.innerHeight;
 
-            // Detectar pantallas pequeñas y aplicar un 'boost' para que los
-            // tiles (y por tanto las imágenes) se escalen más grande en móvil.
-            // Si `originalSize` es muy grande (p. ej. imágenes de alta resolución),
-            // la escala por `winW / originalSize.w` puede producir imágenes muy pequeñas,
-            // por eso aumentamos el ancho de referencia en dispositivos móviles.
+            // Detección básica de móvil (puedes ajustar el breakpoint)
+            // `mobileBoost` se usa para escalar la referencia de ancho en móvil
+            // cuando las imágenes de referencia son muy grandes.
             const isMobile = winW < 768;
-            const mobileBoost = isMobile ? 2.5 : 1; // ajustable si quieres más/menos escala
+            const mobileBoost = isMobile ? 2.5 : 1; // aumentar para ver imágenes más grandes en móvil
 
+            // Parámetros que afectan la separación y sensibilidad en móvil
+            const spacingFactor = isMobile ? 1.6 : 1; // separa las posiciones X/Y en móvil
+            const dragSensitivity = isMobile ? 1.6 : 1; // hace el drag más reactivo
+            const touchSensitivity = isMobile ? 1.6 : 1; // sensibilidad para touch
+
+            // Tamaño del 'tile' de referencia en píxeles (se usa para repetir el patrón)
             const tileSize = {
                 w: winW * mobileBoost,
                 h: winW * mobileBoost * (originalSize.h / originalSize.w),
             };
 
+            // Estado virtual de scroll: target vs current para interpolar movimiento
             const scroll = {
-                ease: 0.06,
+                // ease controla la rapidez con la que current se acerca a target
+                ease: isMobile ? 0.12 : 0.06,
                 current: { x: -winW * 0.1, y: -winH * 0.1 },
                 target: { x: -winW * 0.1, y: -winH * 0.1 },
                 last: { x: -winW * 0.1, y: -winH * 0.1 },
                 delta: { x: { c: 0, t: 0 }, y: { c: 0, t: 0 } },
             };
 
+            // Valores relacionados con la posición del ratón/táctil, usados para parallax
             const mouse = {
-                x: { t: 0.5, c: 0.5 },
-                y: { t: 0.5, c: 0.5 },
+                x: { t: 0.1, c: 0.1 },
+                y: { t: 0.1, c: 0.1 },
                 press: { t: 0, c: 0 },
             };
 
             let isDragging = false;
             const drag = { startX: 0, startY: 0, scrollX: 0, scrollY: 0 };
 
+            // IntersectionObserver para añadir/quitar la clase 'visible' a captions
+            // cuando entran o salen del viewport (puede activar animaciones CSS).
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach((entry) => {
                     entry.target.classList.toggle('visible', entry.isIntersecting);
@@ -101,12 +122,15 @@ const InfiniteGrid: React.FC<InfiniteGridProps> = ({ sources, data, originalSize
             const scaleX = tileSize.w / originalSize.w;
             const scaleY = tileSize.h / originalSize.h;
 
+            // Construcción de los items base a partir de los datos de layout y las
+            // imágenes (sources). `spacingFactor` amplía la separación entre
+            // coordenadas sin afectar el tamaño de los tiles.
             const baseItems = data.map((d, i) => ({
                 ...d,
                 src: sources[i % sources.length].src,
                 caption: sources[i % sources.length].caption,
-                x: d.x * scaleX,
-                y: d.y * scaleY,
+                x: d.x * scaleX * spacingFactor,
+                y: d.y * scaleY * spacingFactor,
                 w: d.w * scaleX,
                 h: d.h * scaleY,
             }));
@@ -117,6 +141,9 @@ const InfiniteGrid: React.FC<InfiniteGridProps> = ({ sources, data, originalSize
 
             el.innerHTML = '';
 
+            // Crear DOM para cada baseItem y sus repeticiones (repsX/Y) para
+            // conseguir el efecto de grid infinito. Cada tile se construye usando
+            // elementos DOM puros para un control más directo.
             baseItems.forEach((base) => {
                 repsX.forEach((offsetX) => {
                     repsY.forEach((offsetY) => {
@@ -133,9 +160,10 @@ const InfiniteGrid: React.FC<InfiniteGridProps> = ({ sources, data, originalSize
                         itemImage.style.height = `${base.h}px`;
 
                         const img = new Image();
-                        img.src = `/img/${base.src}`;
+                        img.src = `/img/${base.src}`; // carga desde public/img
                         img.className = 'w-full h-full object-cover will-change-transform custom-shadow opacity-0 scale-95';
                         img.addEventListener('click', () => {
+                            // Abrir popup al clickar la imagen
                             setPopup({ src: base.src, caption: base.caption });
                         });
 
@@ -143,16 +171,17 @@ const InfiniteGrid: React.FC<InfiniteGridProps> = ({ sources, data, originalSize
                         wrapper.appendChild(itemImage);
 
                         const caption = document.createElement('small');
-                        // Usar tamaño de texto y márgenes más razonables en móvil
+                        // Caption con diferente estilo en móvil vs escritorio
                         caption.className = isMobile
                             ? 'block text-[14px] mt-[1.2rem] leading-[1.25]'
-                            : 'block text-[8rem] mt-[12rem] leading-[1.25]';
+                            : 'block text-[16px] mt-[12rem] leading-[1.25]';
                         caption.innerHTML = base.caption;
                         wrapper.appendChild(caption);
 
                         itemEl.appendChild(wrapper);
                         el.appendChild(itemEl);
 
+                        // Animaciones de entrada: SplitText para las líneas del caption
                         const split = new SplitText(caption, { type: 'lines', linesClass: 'line' });
                         gsap.set(split.lines, { opacity: 0, y: 2 });
                         gsap.to(split.lines, {
@@ -164,6 +193,7 @@ const InfiniteGrid: React.FC<InfiniteGridProps> = ({ sources, data, originalSize
                             delay: 0.1,
                         });
 
+                        // Fade-in + scale del img
                         gsap.to(img, {
                             opacity: 1,
                             scale: 1,
@@ -174,6 +204,7 @@ const InfiniteGrid: React.FC<InfiniteGridProps> = ({ sources, data, originalSize
 
                         observer.observe(caption);
 
+                        // Guardar item para el loop de render
                         items.push({
                             el: itemEl,
                             img,
@@ -193,6 +224,7 @@ const InfiniteGrid: React.FC<InfiniteGridProps> = ({ sources, data, originalSize
             tileSize.w *= 2;
             tileSize.h *= 2;
 
+            // Wheel handler: mueve la cámara virtual según la rueda/trackpad
             const onWheel = (e: WheelEvent) => {
                 e.preventDefault();
                 const factor = 0.4;
@@ -200,14 +232,16 @@ const InfiniteGrid: React.FC<InfiniteGridProps> = ({ sources, data, originalSize
                 scroll.target.y -= e.deltaY * factor;
             };
 
+            // Mouse move: actualiza parallax y permite arrastrar con el ratón
             const onMouseMove = (e: MouseEvent) => {
                 mouse.x.t = e.clientX / winW;
                 mouse.y.t = e.clientY / winH;
                 if (isDragging) {
                     const dx = e.clientX - drag.startX;
                     const dy = e.clientY - drag.startY;
-                    scroll.target.x = drag.scrollX + dx;
-                    scroll.target.y = drag.scrollY + dy;
+                    // Aplicar sensibilidad al arrastre para que resulte más rápido en móvil
+                    scroll.target.x = drag.scrollX + dx * dragSensitivity;
+                    scroll.target.y = drag.scrollY + dy * dragSensitivity;
                 }
             };
 
@@ -239,12 +273,15 @@ const InfiniteGrid: React.FC<InfiniteGridProps> = ({ sources, data, originalSize
                 mouse.press.t = 1;
             };
 
+            // Touch move: arrastre táctil con sensibilidad ajustable
             const onTouchMove = (e: TouchEvent) => {
                 if (!isDragging || e.touches.length !== 1) return;
                 const dx = e.touches[0].clientX - drag.startX;
                 const dy = e.touches[0].clientY - drag.startY;
-                scroll.target.x = drag.scrollX + dx;
-                scroll.target.y = drag.scrollY + dy;
+                // Multiplicar por `touchSensitivity` para que el desplazamiento táctil
+                // tenga más inercia/respuesta en dispositivos móviles.
+                scroll.target.x = drag.scrollX + dx * touchSensitivity;
+                scroll.target.y = drag.scrollY + dy * touchSensitivity;
             };
 
             const onTouchEnd = () => {
@@ -253,10 +290,14 @@ const InfiniteGrid: React.FC<InfiniteGridProps> = ({ sources, data, originalSize
                 mouse.press.t = 0;
             };
 
+            // Loop principal de render: interpola la posición 'current' hacia 'target'
+            // y aplica transformaciones a cada tile. También gestiona el wrap infinito.
             const render = () => {
+                // lerp simple para suavizar la cámara
                 scroll.current.x += (scroll.target.x - scroll.current.x) * scroll.ease;
                 scroll.current.y += (scroll.target.y - scroll.current.y) * scroll.ease;
 
+                // calcular variaciones/deltas para efectos secundarios (parallax)
                 scroll.delta.x.t = scroll.current.x - scroll.last.x;
                 scroll.delta.y.t = scroll.current.y - scroll.last.y;
                 scroll.delta.x.c += (scroll.delta.x.t - scroll.delta.x.c) * 0.04;
@@ -269,12 +310,14 @@ const InfiniteGrid: React.FC<InfiniteGridProps> = ({ sources, data, originalSize
                 const dirY = scroll.current.y > scroll.last.y ? 'down' : 'up';
 
                 items.forEach((item) => {
+                    // pequeñas oscilaciones en función de la velocidad y posición del ratón
                     const newX = 5 * scroll.delta.x.c * item.ease + (mouse.x.c - 0.5) * item.rect.width * 0.6;
                     const newY = 5 * scroll.delta.y.c * item.ease + (mouse.y.c - 0.5) * item.rect.height * 0.6;
 
                     const posX = item.x + scroll.current.x + item.extraX + newX;
                     const posY = item.y + scroll.current.y + item.extraY + newY;
 
+                    // wrap: si el tile sale fuera del viewport, lo movemos al otro lado
                     if (dirX === 'right' && posX > winW) item.extraX -= tileSize.w;
                     if (dirX === 'left' && posX + item.rect.width < 0) item.extraX += tileSize.w;
                     if (dirY === 'down' && posY > winH) item.extraY -= tileSize.h;
@@ -283,10 +326,12 @@ const InfiniteGrid: React.FC<InfiniteGridProps> = ({ sources, data, originalSize
                     const fx = item.x + scroll.current.x + item.extraX + newX;
                     const fy = item.y + scroll.current.y + item.extraY + newY;
 
+                    // Aplicar transform al contenedor y al propio img para efecto visual
                     item.el.style.transform = `translate(${fx}px, ${fy}px)`;
                     item.img.style.transform = `scale(${1.2 + 0.2 * mouse.press.c * item.ease}) translate(${-mouse.x.c * item.ease * 10}%, ${-mouse.y.c * item.ease * 10}%)`;
                 });
 
+                // guardar último estado y pedir siguiente frame
                 scroll.last.x = scroll.current.x;
                 scroll.last.y = scroll.current.y;
                 requestAnimationFrame(render);
