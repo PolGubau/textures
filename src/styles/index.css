@@ -13,6 +13,7 @@ body {
     background-color: #111111;
     color: #ffffff;
     margin: 0;
+    font-size: 16;
     -moz-osx-font-smoothing: grayscale;
     -webkit-font-smoothing: antialiased;
     overscroll-behavior-y: none;

@@ -62,9 +62,17 @@ const InfiniteGrid: React.FC<InfiniteGridProps> = ({ sources, data, originalSize
             const winW = window.innerWidth;
             const winH = window.innerHeight;
 
+            // Detectar pantallas pequeñas y aplicar un 'boost' para que los
+            // tiles (y por tanto las imágenes) se escalen más grande en móvil.
+            // Si `originalSize` es muy grande (p. ej. imágenes de alta resolución),
+            // la escala por `winW / originalSize.w` puede producir imágenes muy pequeñas,
+            // por eso aumentamos el ancho de referencia en dispositivos móviles.
+            const isMobile = winW < 768;
+            const mobileBoost = isMobile ? 2.5 : 1; // ajustable si quieres más/menos escala
+
             const tileSize = {
-                w: winW,
-                h: winW * (originalSize.h / originalSize.w),
+                w: winW * mobileBoost,
+                h: winW * mobileBoost * (originalSize.h / originalSize.w),
             };
 
             const scroll = {
@@ -135,7 +143,10 @@ const InfiniteGrid: React.FC<InfiniteGridProps> = ({ sources, data, originalSize
                         wrapper.appendChild(itemImage);
 
                         const caption = document.createElement('small');
-                        caption.className = 'block text-[8rem] mt-[12rem] leading-[1.25]';
+                        // Usar tamaño de texto y márgenes más razonables en móvil
+                        caption.className = isMobile
+                            ? 'block text-[14px] mt-[1.2rem] leading-[1.25]'
+                            : 'block text-[8rem] mt-[12rem] leading-[1.25]';
                         caption.innerHTML = base.caption;
                         wrapper.appendChild(caption);
 
@@ -179,8 +190,8 @@ const InfiniteGrid: React.FC<InfiniteGridProps> = ({ sources, data, originalSize
                 });
             });
 
-            tileSize.w *= 3;
-            tileSize.h *= 3;
+            tileSize.w *= 2;
+            tileSize.h *= 2;
 
             const onWheel = (e: WheelEvent) => {
                 e.preventDefault();
