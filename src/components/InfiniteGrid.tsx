@@ -179,8 +179,8 @@ const InfiniteGrid: React.FC<InfiniteGridProps> = ({ sources, data, originalSize
                 });
             });
 
-            tileSize.w *= 2;
-            tileSize.h *= 2;
+            tileSize.w *= 3;
+            tileSize.h *= 3;
 
             const onWheel = (e: WheelEvent) => {
                 e.preventDefault();
