@@ -2,15 +2,10 @@
 @import "./font.css";
 @import "./colors.css";
 
-@custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
-
+ 
 html,
 body {
-	@apply bg-canvas text-foreground;
-
-	@media (prefers-color-scheme: dark) {
-		color-scheme: dark;
-	}
+	@apply bg-background text-foreground;
 }
 :root {
 	--vh: 1vh;

@@ -1,65 +1,55 @@
 .overlay {
-    position: fixed;
-    inset: 0;
-    background: #111111;
-    display: grid;
-    place-items: center;
-    z-index: 9999;
-    opacity: 1;
-    transition: opacity 0.5s ease;
+	z-index: 9999;
 }
 
 .fade-in {
-    opacity: 1;
+	opacity: 1;
 }
 
 .fade-out {
-    opacity: 0;
-    pointer-events: none;
+	pointer-events: none;
+	opacity: 0;
 }
 
 .loader {
-    --color: white;
-    --size-bar: 0.2vmin;
-    display: block;
-    position: relative;
-    width: 50%;
-    display: grid;
-    place-items: center;
+	--color: black;
+	--size-bar: 0.2vmin;
+	position: relative;
+	display: block;
+	place-items: center;
 }
 
 .loader::before {
-    content: '';
-    box-sizing: border-box;
-    position: absolute;
-    height: var(--size-bar);
-    width: 16vmin;
-    background-color: var(--color);
-    animation: loader-4 0.8s cubic-bezier(0, 0, 0.03, 0.9) infinite;
+	position: absolute;
+	box-sizing: border-box;
+	width: 16vmin;
+	height: var(--size-bar);
+	content: "";
+	background-color: var(--color);
+	animation: loader-4 0.8s cubic-bezier(0, 0, 0.03, 0.9) infinite;
 }
 
 @keyframes loader-4 {
+	0%,
+	44%,
+	88.1%,
+	100% {
+		transform-origin: left;
+	}
 
-    0%,
-    44%,
-    88.1%,
-    100% {
-        transform-origin: left;
-    }
+	0.1%,
+	100%,
+	88% {
+		transform: scaleX(0);
+	}
 
-    0%,
-    100%,
-    88% {
-        transform: scaleX(0);
-    }
+	44.1%,
+	88% {
+		transform-origin: right;
+	}
 
-    44.1%,
-    88% {
-        transform-origin: right;
-    }
-
-    33%,
-    44% {
-        transform: scaleX(1);
-    }
+	33%,
+	44% {
+		transform: scaleX(1);
+	}
 }

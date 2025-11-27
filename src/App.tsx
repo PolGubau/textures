@@ -14,13 +14,13 @@ function App() {
   }, []);
 
   return (
-    <>
+    <div className='bg-background'>
       <Loader visible={showLoader} />
       <main id="main">
-       
+
         <Index />
       </main>
-    </>
+    </div>
   );
 }
 

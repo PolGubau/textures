@@ -72,10 +72,10 @@ const InfiniteGrid: React.FC<InfiniteGridProps> = ({
             // `mobileBoost` se usa para escalar la referencia de ancho en móvil
             // cuando las imágenes de referencia son muy grandes.
             const isMobile = winW < 768;
-            const mobileBoost = isMobile ? 2.5 : 1; // aumentar para ver imágenes más grandes en móvil
+            const mobileBoost = isMobile ? 5 : 1; // aumentar para ver imágenes más grandes en móvil
 
             // Parámetros que afectan la separación y sensibilidad en móvil
-            const spacingFactor = isMobile ? 1.6 : 1; // separa las posiciones X/Y en móvil
+            const spacingFactor = isMobile ? 4 : 1; // separa las posiciones X/Y en móvil
             const dragSensitivity = isMobile ? 1.6 : 1; // hace el drag más reactivo
             const touchSensitivity = isMobile ? 1.6 : 1; // sensibilidad para touch
 
@@ -109,7 +109,10 @@ const InfiniteGrid: React.FC<InfiniteGridProps> = ({
             // cuando entran o salen del viewport (puede activar animaciones CSS).
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach((entry) => {
-                    entry.target.classList.toggle("inside-viewport", entry.isIntersecting);
+                    entry.target.classList.toggle(
+                        "inside-viewport",
+                        entry.isIntersecting,
+                    );
                 });
             });
 
@@ -146,7 +149,7 @@ const InfiniteGrid: React.FC<InfiniteGridProps> = ({
                         itemEl.style.width = `${base.w}px`;
 
                         const wrapper = document.createElement("div");
-                        wrapper.className = "item-wrapper will-change-transform";
+                        wrapper.className = "item-wrapper";
 
                         const itemImage = document.createElement("div");
                         itemImage.className = "item-image overflow-hidden";
@@ -155,14 +158,10 @@ const InfiniteGrid: React.FC<InfiniteGridProps> = ({
 
                         const img = new Image();
                         img.src = `/img/${base.src}`; // carga desde public/img
-                        img.className =
-                            "w-full h-full object-cover will-change-transform opacity-0";
+                        img.className = "w-full h-full object-cover opacity-0";
+                        img.style.willChange = "transform"; // solo durante animación
                         img.addEventListener("click", () => {
                             setPopup({ caption: base.caption, src: base.src });
-                            const captionElement = document.getElementById("popup-caption");
-                            if (captionElement) {
-                                captionElement.innerHTML = popup?.caption || "";
-                            }
                         });
 
                         itemImage.appendChild(img);
@@ -236,16 +235,22 @@ const InfiniteGrid: React.FC<InfiniteGridProps> = ({
             };
 
             // Mouse move: actualiza parallax y permite arrastrar con el ratón
+            // Throttle implícito via RAF para mejor rendimiento
+            let rafId: number | null = null;
             const onMouseMove = (e: MouseEvent) => {
-                mouse.x.t = e.clientX / winW;
-                mouse.y.t = e.clientY / winH;
-                if (isDragging) {
-                    const dx = e.clientX - drag.startX;
-                    const dy = e.clientY - drag.startY;
-                    // Aplicar sensibilidad al arrastre para que resulte más rápido en móvil
-                    scroll.target.x = drag.scrollX + dx * dragSensitivity;
-                    scroll.target.y = drag.scrollY + dy * dragSensitivity;
-                }
+                if (rafId) return; // skip si ya hay un frame pendiente
+                rafId = requestAnimationFrame(() => {
+                    mouse.x.t = e.clientX / winW;
+                    mouse.y.t = e.clientY / winH;
+                    if (isDragging) {
+                        const dx = e.clientX - drag.startX;
+                        const dy = e.clientY - drag.startY;
+                        // Aplicar sensibilidad al arrastre para que resulte más rápido en móvil
+                        scroll.target.x = drag.scrollX + dx * dragSensitivity;
+                        scroll.target.y = drag.scrollY + dy * dragSensitivity;
+                    }
+                    rafId = null;
+                });
             };
 
             const onMouseDown = (e: MouseEvent) => {
@@ -312,14 +317,17 @@ const InfiniteGrid: React.FC<InfiniteGridProps> = ({
                 const dirX = scroll.current.x > scroll.last.x ? "right" : "left";
                 const dirY = scroll.current.y > scroll.last.y ? "down" : "up";
 
+                // Precalcular valores comunes fuera del loop
+                const mouseOffsetX = mouse.x.c - 0.5;
+                const mouseOffsetY = mouse.y.c - 0.5;
+                const deltaX = scroll.delta.x.c * 5;
+                const deltaY = scroll.delta.y.c * 5;
+                const pressScale = 1.2 + 0.2 * mouse.press.c;
+
                 items.forEach((item) => {
                     // pequeñas oscilaciones en función de la velocidad y posición del ratón
-                    const newX =
-                        5 * scroll.delta.x.c * item.ease +
-                        (mouse.x.c - 0.5) * item.rect.width * 1;
-                    const newY =
-                        5 * scroll.delta.y.c * item.ease +
-                        (mouse.y.c - 0.5) * item.rect.height * 1;
+                    const newX = deltaX * item.ease + mouseOffsetX * item.rect.width;
+                    const newY = deltaY * item.ease + mouseOffsetY * item.rect.height;
 
                     const posX = item.x + scroll.current.x + item.extraX + newX;
                     const posY = item.y + scroll.current.y + item.extraY + newY;
@@ -335,9 +343,13 @@ const InfiniteGrid: React.FC<InfiniteGridProps> = ({
                     const fx = item.x + scroll.current.x + item.extraX + newX;
                     const fy = item.y + scroll.current.y + item.extraY + newY;
 
-                    // Aplicar transform al contenedor y al propio img para efecto visual
-                    item.el.style.transform = `translate(${fx}px, ${fy}px)`;
-                    item.img.style.transform = `scale(${1.2 + 0.2 * mouse.press.c * item.ease}) translate(${-mouse.x.c * item.ease * 10}%, ${-mouse.y.c * item.ease * 10}%)`;
+                    // Usar translate3d para activar aceleración GPU (mejor rendimiento)
+                    item.el.style.transform = `translate3d(${fx}px, ${fy}px, 0)`;
+                    // Simplificar transform del img para reducir carga
+                    const imgScale = pressScale * item.ease;
+                    const imgX = -mouse.x.c * item.ease * 10;
+                    const imgY = -mouse.y.c * item.ease * 10;
+                    item.img.style.transform = `scale(${imgScale}) translate(${imgX}%, ${imgY}%)`;
                 });
 
                 // guardar último estado y pedir siguiente frame
@@ -375,7 +387,8 @@ const InfiniteGrid: React.FC<InfiniteGridProps> = ({
         }
     }, [sources, originalSize]);
 
-
+    // caption until first <br>
+    const [title, description, details] = (popup?.caption || "").split("<br>");
 
     return (
         <>
@@ -385,33 +398,59 @@ const InfiniteGrid: React.FC<InfiniteGridProps> = ({
                 ref={containerRef}
             />
 
-            <Drawer onOpenChange={() => setPopup(null)} open={!!popup}>
-                <nav className="flex items-center justify-between">
-                    <p className="block" id="popup-caption">
-                    </p>
-                    <a
-                        className="z-20 text-white/80 hover:text-white hover:bg-white/10 transition-all rounded-full p-2"
-                        download
-                        href={`/img/${popup?.src}`}
-                    >
-                        <svg
-                            fill="currentColor"
-                            height="24px"
-                            viewBox="0 -960 960 960"
-                            width="24px"
-                            xmlns="http://www.w3.org/2000/svg"
+            <Drawer
+                description={description}
+                footer={<p className="text-sm text-foreground/60">{details}</p>}
+                onOpenChange={() => setPopup(null)}
+                open={!!popup}
+                title={title}
+            >
+
+                <div className="grid grid-cols-2 gap-4">
+                    <div className="relative">
+
+                        <img
+                            alt="popup"
+                            className="max-h-[70vh] md:max-h-[50vh] rounded-xl"
+                            ref={popupImageRef}
+                            src={`/img/${popup?.src}`}
+                        />
+
+                        <a
+                            className="z-20 absolute text-background bottom-2 left-2 bg-foreground/40 backdrop-blur-md hover:text-white hover:bg-white/10 transition-all rounded-full p-1.5"
+                            download
+                            href={`/img/${popup?.src}`}
                         >
-                            <title>Download</title>
-                            <path d="M480-320 280-520l56-58 104 104v-326h80v326l104-104 56 58-200 200ZM240-160q-33 0-56.5-23.5T160-240v-120h80v120h480v-120h80v120q0 33-23.5 56.5T720-160H240Z" />
-                        </svg>
-                    </a>
-                </nav>
-                <img
-                    alt="popup"
-                    className="max-h-[70vh] mx-auto mb-4 rounded-xl shadow-2xl"
-                    ref={popupImageRef}
-                    src={`/img/${popup?.src}`}
-                />
+                            <svg
+                                className="fill-background"
+                                height="24px"
+                                viewBox="0 -960 960 960"
+                                width="24px"
+                                xmlns="http://www.w3.org/2000/svg"
+                            >
+                                <title>Download</title>
+                                <path d="M480-320 280-520l56-58 104 104v-326h80v326l104-104 56 58-200 200ZM240-160q-33 0-56.5-23.5T160-240v-120h80v120h480v-120h80v120q0 33-23.5 56.5T720-160H240Z" />
+                            </svg>
+                        </a>
+
+                    </div>
+
+                    <div className="relative">
+                        <ul className="grid grid-cols-2 grid-rows-2 rounded-xl overflow-hidden">
+                            {new Array(4).fill(0).map((_, i) => (
+                                <li key={i}>
+                                    <img
+                                        alt="tile"
+                                        className="w-full h-auto"
+                                        src={`/img/${popup?.src}`}
+                                    />
+                                </li>
+                            ))}
+                        </ul>
+                        <p className="absolute bottom-2 left-2 bg-foreground/40 text-background text-sm backdrop-blur-md rounded-xl px-2">Tiling test</p>
+
+                    </div>
+                </div>
             </Drawer>
         </>
     );
