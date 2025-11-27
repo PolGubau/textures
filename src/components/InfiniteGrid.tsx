@@ -152,13 +152,15 @@ const InfiniteGrid: React.FC<InfiniteGridProps> = ({
                         wrapper.className = "item-wrapper";
 
                         const itemImage = document.createElement("div");
-                        itemImage.className = "item-image overflow-hidden";
+                        itemImage.className =
+                            "item-image overflow-hidden w-full h-full bg-neutral-200 shadow-lg";
                         itemImage.style.width = `${base.w}px`;
                         itemImage.style.height = `${base.h}px`;
 
                         const img = new Image();
                         img.src = `/img/${base.src}`; // carga desde public/img
-                        img.className = "w-full h-full object-cover opacity-0";
+                        img.className =
+                            "w-full h-full bg-neutral-200 h-full object-cover opacity-0";
                         img.style.willChange = "transform"; // solo durante animación
                         img.addEventListener("click", () => {
                             setPopup({ caption: base.caption, src: base.src });
@@ -171,7 +173,7 @@ const InfiniteGrid: React.FC<InfiniteGridProps> = ({
                         // Caption con diferente estilo en móvil vs escritorio
                         // DEBUG: mostrar nombre de la foto junto al caption
                         caption.innerHTML = `${base.caption} <span style="opacity: 0.5;">[${base.src}]</span>`;
-                        caption.className = `																								block space-y-1 text-[16px] md:text-[14px] mt-4 leading-[1.25] md:mt-2 [&>.line3]:text-[10px]`;
+                        caption.className = `block text-[16px] md:text-[14px] leading-[1.25] mt-2 [&>.line3]:text-[10px] [&>.line4]:text-[8px]`;
                         wrapper.appendChild(caption);
 
                         itemEl.appendChild(wrapper);
@@ -192,15 +194,15 @@ const InfiniteGrid: React.FC<InfiniteGridProps> = ({
                             stagger: 0.3,
                             y: 0,
                         });
-                        gsap.set(img, { opacity: 0, scale: 0.6 });
+                        gsap.set(img, { height: "10%", opacity: 0 });
 
                         // Fade-in + scale del img
                         gsap.to(img, {
                             delay: 0.2 + Math.random() * 1,
                             duration: 0.6,
                             ease: "power2.out",
+                            height: "100%",
                             opacity: 1,
-                            scale: 1,
                             stagger: 0.05,
                         });
 
@@ -345,11 +347,7 @@ const InfiniteGrid: React.FC<InfiniteGridProps> = ({
 
                     // Usar translate3d para activar aceleración GPU (mejor rendimiento)
                     item.el.style.transform = `translate3d(${fx}px, ${fy}px, 0)`;
-                    // Simplificar transform del img para reducir carga
-                    const imgScale = pressScale * item.ease;
-                    const imgX = -mouse.x.c * item.ease * 10;
-                    const imgY = -mouse.y.c * item.ease * 10;
-                    item.img.style.transform = `scale(${imgScale}) translate(${imgX}%, ${imgY}%)`;
+
                 });
 
                 // guardar último estado y pedir siguiente frame
@@ -387,8 +385,7 @@ const InfiniteGrid: React.FC<InfiniteGridProps> = ({
         }
     }, [sources, originalSize]);
 
-    // caption until first <br>
-    const [title, description, details] = (popup?.caption || "").split("<br>");
+    const [title, description, details, year] = (popup?.caption || "").split("<br/>");
 
     return (
         <>
@@ -400,7 +397,10 @@ const InfiniteGrid: React.FC<InfiniteGridProps> = ({
 
             <Drawer
                 description={description}
-                footer={<p className="text-sm text-foreground/60">{details}</p>}
+                footer={<p className="text-sm text-foreground/60 flex gap-2 flex-wrap">
+                    <span>{details}</span>
+                    <span>{year}</span>
+                </p>}
                 onOpenChange={() => setPopup(null)}
                 open={!!popup}
                 title={title}

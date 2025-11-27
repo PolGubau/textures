@@ -9,7 +9,7 @@ export type Source = {
 export const sources: Source[] = [
 	{
 		caption:
-			"Façana del Born<br>Detall de pared habitual al barri<br>Col·lecció personal, capturat per Marcos Rayo, 2025",
+			"Façana del Born<br/>Detall de pared habitual al barri<br/>Col·lecció personal, capturat per Marcos Rayo<br/>2025",
 		h: 270,
 		src: "0.JPG",
 		w: 400,
@@ -18,7 +18,7 @@ export const sources: Source[] = [
 	},
 	{
 		caption:
-			"Graffiti al barri Gòtic<br>Graffiti antic a façana<br>Col·lecció personal, capturat per Marcos Rayo, 2025",
+			"Graffiti al barri Gòtic<br/>Graffiti antic a façana<br/>Col·lecció personal, capturat per Marcos Rayo<br/>2025",
 		h: 150,
 		src: "1.JPG",
 		w: 350,
@@ -26,7 +26,7 @@ export const sources: Source[] = [
 		y: 0,
 	},
 	{
-		caption: `Pared pintada al Raval<br>Detall de graffiti i textures<br>Col·lecció personal, capturat per Marcos Rayo, 2025`,
+		caption: `Pared pintada al Raval<br/>Detall de graffiti i textures<br/>Col·lecció personal, capturat per Marcos Rayo<br/>2025`,
 		h: 230,
 		src: "2.JPG",
 		w: 120,
@@ -34,7 +34,7 @@ export const sources: Source[] = [
 		y: 430,
 	},
 	{
-		caption: `Pared vella al Born<br>Detall de textures i colors<br>Col·lecció personal, capturat per Marcos Rayo, 2025`,
+		caption: `Pared vella al Born<br/>Detall de textures i colors<br/>Col·lecció personal, capturat per Marcos Rayo<br/>2025`,
 		h: 270,
 		src: "3.JPG",
 		w: 360,
@@ -42,7 +42,7 @@ export const sources: Source[] = [
 		y: 890,
 	},
 	{
-		caption: `Porta antiga al Raval<br>Detall de fusta pintada i colors<br>Col·lecció personal, capturat per Marcos Rayo, 2025`,
+		caption: `Porta antiga al Raval<br/>Detall de fusta pintada i colors<br/>Col·lecció personal, capturat per Marcos Rayo<br/>2025`,
 		h: 220,
 		src: "4.JPG",
 		w: 360,
@@ -50,7 +50,7 @@ export const sources: Source[] = [
 		y: 320,
 	},
 	{
-		caption: `Cartell pintat<br>Multiples capes de pintura i textures<br>Col·lecció personal, capturat per Marcos Rayo, 2025`,
+		caption: `Cartell pintat<br/>Multiples capes de pintura i textures<br/>Col·lecció personal, capturat per Marcos Rayo<br/>2025`,
 		h: 270,
 		src: "5.JPG",
 		w: 300,
@@ -58,7 +58,7 @@ export const sources: Source[] = [
 		y: 640,
 	},
 	{
-		caption: `Detall de cartell pintat<br>Colors vius i textures complexes<br>Col·lecció personal, capturat per Marcos Rayo, 2025`,
+		caption: `Detall de cartell pintat<br/>Colors vius i textures complexes<br/>Col·lecció personal, capturat per Marcos Rayo<br/>2025`,
 		h: 250,
 		src: "6.JPG",
 		w: 200,
@@ -66,7 +66,7 @@ export const sources: Source[] = [
 		y: 23,
 	},
 	{
-		caption: `Zoom a cartells<br>Detall de capes i textures<br>Col·lecció personal, capturat per Marcos Rayo, 2025`,
+		caption: `Zoom a cartells<br/>Detall de capes i textures<br/>Col·lecció personal, capturat per Marcos Rayo<br/>2025`,
 		h: 120,
 		src: "7.JPG",
 		w: 120,
@@ -74,7 +74,7 @@ export const sources: Source[] = [
 		y: 600,
 	},
 	{
-		caption: `Pintura i lettering<br>Detall de colors i textures<br>Col·lecció personal, capturat per Marcos Rayo, 2025`,
+		caption: `Pintura i lettering<br/>Detall de colors i textures<br/>Col·lecció personal, capturat per Marcos Rayo<br/>2025`,
 		h: 240,
 		src: "8.JPG",
 		w: 300,
@@ -83,7 +83,7 @@ export const sources: Source[] = [
 	},
 	{
 		caption:
-			"Graffiti lletres grans <br>Detall en groc <br>Col·lecció personal, capturat per Marcos Rayo, 2025",
+			"Graffiti lletres grans <br/>Detall en groc <br/>Col·lecció personal, capturat per Marcos Rayo<br/>2025",
 		h: 120,
 		src: "9.JPG",
 		w: 100,
@@ -92,7 +92,7 @@ export const sources: Source[] = [
 	},
 	{
 		caption:
-			"Pared malmesa al Raval <br>Pintura aixecada <br>Col·lecció personal, capturat per Marcos Rayo, 2025",
+			"Pared malmesa al Raval <br/>Pintura aixecada <br/>Col·lecció personal, capturat per Marcos Rayo<br/>2025",
 		h: 200,
 		src: "10.JPG",
 		w: 150,
@@ -101,7 +101,7 @@ export const sources: Source[] = [
 	},
 	{
 		caption:
-			"Textura Rugosa<br>Detall de superfície irregular<br>Col·lecció personal, capturat per Marcos Rayo, 2025",
+			"Textura Rugosa<br/>Detall de superfície irregular<br/>Col·lecció personal, capturat per Marcos Rayo<br/>2025",
 		h: 200,
 		src: "11.JPG",
 		w: 120,
@@ -110,7 +110,7 @@ export const sources: Source[] = [
 	},
 	{
 		caption:
-			"Rajoles del carrer Petritxol <br>Repetició de tons <br>Col·lecció personal, capturat per Marcos Rayo, 2025",
+			"Rajoles del carrer Petritxol <br/>Repetició de tons <br/>Col·lecció personal, capturat per Marcos Rayo<br/>2025",
 		h: 170,
 		src: "12.JPG",
 		w: 100,
@@ -119,7 +119,7 @@ export const sources: Source[] = [
 	},
 	{
 		caption:
-			"Detall de claveguera antiga <br>Textures metàl·liques <br>Col·lecció personal, capturat per Marcos Rayo, 2025",
+			"Detall de claveguera antiga <br/>Textures metàl·liques <br/>Col·lecció personal, capturat per Marcos Rayo<br/>2025",
 		h: 160,
 		src: "13.JPG",
 		w: 300,
@@ -128,7 +128,7 @@ export const sources: Source[] = [
 	},
 	{
 		caption:
-			"Relleus de flors <br>Detall arquitectònic <br>Col·lecció personal, capturat per Marcos Rayo, 2025",
+			"Relleus de flors <br/>Detall arquitectònic <br/>Col·lecció personal, capturat per Marcos Rayo<br/>2025",
 		h: 200,
 		src: "14.JPG",
 		w: 200,
@@ -138,7 +138,7 @@ export const sources: Source[] = [
 
 	{
 		caption:
-			"Repetició a vidres <br>Detall de finestra antigua <br>Col·lecció personal, capturat per Marcos Rayo, 2025",
+			"Repetició a vidres <br/>Detall de finestra antigua <br/>Col·lecció personal, capturat per Marcos Rayo<br/>2025",
 		h: 270,
 		src: "16.JPG",
 		w: 300,
@@ -147,7 +147,7 @@ export const sources: Source[] = [
 	},
 	{
 		caption:
-			"Textura regular <br>Detall de superfície amb patró irregular<br>Col·lecció personal, capturat per Marcos Rayo, 2025",
+			"Textura regular <br/>Detall de superfície amb patró irregular<br/>Col·lecció personal, capturat per Marcos Rayo<br/>2025",
 		h: 370,
 		src: "17.JPG",
 		w: 200,
@@ -156,7 +156,7 @@ export const sources: Source[] = [
 	},
 	{
 		caption:
-			"Mossaic rodó <br>Recomanació de l'Andrea<br>Col·lecció personal, capturat per Marcos Rayo, 2025",
+			"Mossaic rodó <br/>Recomanació de l'Andrea<br/>Col·lecció personal, capturat per Marcos Rayo<br/>2025",
 		h: 270,
 		src: "18.JPG",
 		w: 400,
@@ -165,7 +165,7 @@ export const sources: Source[] = [
 	},
 	{
 		caption:
-			"Detall de Santa Maria del Mar <br>Detall arquitectònic gòtic <br>Col·lecció personal, capturat per Marcos Rayo, 2025",
+			"Detall de Santa Maria del Mar <br/>Detall arquitectònic gòtic <br/>Col·lecció personal, capturat per Marcos Rayo<br/>2025",
 		h: 200,
 		src: "19.JPG",
 		w: 300,
@@ -174,7 +174,7 @@ export const sources: Source[] = [
 	},
 	{
 		caption:
-			"Desgast abstracte a pared <br>Detall de pedra desgastada <br>Col·lecció personal, capturat per Marcos Rayo, 2025",
+			"Desgast abstracte a pared <br/>Detall de pedra desgastada <br/>Col·lecció personal, capturat per Marcos Rayo<br/>2025",
 		h: 270,
 		src: "20.JPG",
 		w: 100,
@@ -184,7 +184,7 @@ export const sources: Source[] = [
 
 	{
 		caption:
-			"Pedra foradada <br>Detall de textura natural <br>Col·lecció personal, capturat per Marcos Rayo, 2025",
+			"Pedra foradada <br/>Detall de textura natural <br/>Col·lecció personal, capturat per Marcos Rayo<br/>2025",
 		h: 270,
 		src: "22.JPG",
 		w: 300,
@@ -193,7 +193,7 @@ export const sources: Source[] = [
 	},
 	{
 		caption:
-			"Zoom a rajola antiga <br>Detall de colors i textures <br>Col·lecció personal, capturat per Marcos Rayo, 2025",
+			"Zoom a rajola antiga <br/>Detall de colors i textures <br/>Col·lecció personal, capturat per Marcos Rayo<br/>2025",
 		h: 170,
 		src: "23.jpg",
 		w: 300,
@@ -202,7 +202,7 @@ export const sources: Source[] = [
 	},
 	{
 		caption:
-			"Mossaic de quadrats <br>Detall de colors verds <br>Col·lecció personal, capturat per Marcos Rayo, 2025",
+			"Mossaic de quadrats <br/>Detall de colors verds <br/>Col·lecció personal, capturat per Marcos Rayo<br/>2025",
 		h: 150,
 		src: "24.JPG",
 		w: 200,
@@ -211,7 +211,7 @@ export const sources: Source[] = [
 	},
 	{
 		caption:
-			"Mossaic bandera blava <br>Detall de colors i textures <br>Col·lecció personal, capturat per Marcos Rayo, 2025",
+			"Mossaic bandera blava <br/>Detall de colors i textures <br/>Col·lecció personal, capturat per Marcos Rayo<br/>2025",
 		h: 270,
 		src: "25.JPG",
 		w: 200,
@@ -220,7 +220,7 @@ export const sources: Source[] = [
 	},
 	{
 		caption:
-			"Lona de tela<br>Detall de textures i plecs <br>Col·lecció personal, capturat per Marcos Rayo, 2025",
+			"Lona de tela<br/>Detall de textures i plecs <br/>Col·lecció personal, capturat per Marcos Rayo<br/>2025",
 		h: 270,
 		src: "26.JPG",
 		w: 400,
@@ -229,7 +229,7 @@ export const sources: Source[] = [
 	},
 	{
 		caption:
-			"Detall tèxtil<br>Textura arrugada <br>Col·lecció personal, capturat per Marcos Rayo, 2025",
+			"Detall tèxtil<br/>Textura arrugada <br/>Col·lecció personal, capturat per Marcos Rayo<br/>2025",
 		h: 270,
 		src: "27.JPG",
 		w: 160,
@@ -238,7 +238,7 @@ export const sources: Source[] = [
 	},
 	{
 		caption:
-			"Lona estirada<br>Detall de textures i plecs <br>Col·lecció personal, capturat per Marcos Rayo, 2025",
+			"Lona estirada<br/>Detall de textures i plecs <br/>Col·lecció personal, capturat per Marcos Rayo<br/>2025",
 		h: 270,
 		src: "28.JPG",
 		w: 200,
@@ -247,7 +247,7 @@ export const sources: Source[] = [
 	},
 	{
 		caption:
-			"Tela d'obra<br>Detall de textures i plecs <br>Col·lecció personal, capturat per Marcos Rayo, 2025",
+			"Tela d'obra<br/>Detall de textures i plecs <br/>Col·lecció personal, capturat per Marcos Rayo<br/>2025",
 		h: 160,
 		src: "29.JPG",
 		w: 350,
@@ -256,7 +256,7 @@ export const sources: Source[] = [
 	},
 	{
 		caption:
-			"Persiana metàl·lica<br>Patró regular <br>Col·lecció personal, capturat per Marcos Rayo, 2025",
+			"Persiana metàl·lica<br/>Patró regular <br/>Col·lecció personal, capturat per Marcos Rayo<br/>2025",
 		h: 70,
 		src: "30.JPG",
 		w: 200,
@@ -265,7 +265,7 @@ export const sources: Source[] = [
 	},
 	{
 		caption:
-			"Graffiti a pared<br>Colors vermells i blancs<br>Col·lecció personal, capturat per Marcos Rayo, 2025",
+			"Graffiti a pared<br/>Colors vermells i blancs<br/>Col·lecció personal, capturat per Marcos Rayo<br/>2025",
 		h: 150,
 		src: "32.JPG",
 		w: 150,
@@ -274,7 +274,7 @@ export const sources: Source[] = [
 	},
 	{
 		caption:
-			"Detall de fusta vella <br>Textures naturals <br>Col·lecció personal, capturat per Marcos Rayo, 2025",
+			"Detall de fusta vella <br/>Textures naturals <br/>Col·lecció personal, capturat per Marcos Rayo<br/>2025",
 		h: 220,
 		src: "33.JPG",
 		w: 300,
@@ -283,7 +283,7 @@ export const sources: Source[] = [
 	},
 	{
 		caption:
-			"Patró a rajoles <br>Detall geomètric <br>Col·lecció personal, capturat per Marcos Rayo, 2025",
+			"Patró a rajoles <br/>Detall geomètric <br/>Col·lecció personal, capturat per Marcos Rayo<br/>2025",
 		h: 370,
 		src: "34.JPG",
 		w: 300,
@@ -292,7 +292,7 @@ export const sources: Source[] = [
 	},
 	{
 		caption:
-			"Zoom a fusta<br>Detall de textures naturals <br>Col·lecció personal, capturat per Marcos Rayo, 2025",
+			"Zoom a fusta<br/>Detall de textures naturals <br/>Col·lecció personal, capturat per Marcos Rayo<br/>2025",
 		h: 250,
 		src: "35.JPG",
 		w: 250,
@@ -301,7 +301,7 @@ export const sources: Source[] = [
 	},
 	{
 		caption:
-			"Gravat a fusta<br>Detall artístic <br>Col·lecció personal, capturat per Marcos Rayo, 2025",
+			"Gravat a fusta<br/>Detall artístic <br/>Col·lecció personal, capturat per Marcos Rayo<br/>2025",
 		h: 270,
 		src: "36.JPG",
 		w: 400,
@@ -310,7 +310,7 @@ export const sources: Source[] = [
 	},
 	{
 		caption:
-			"Fusta gravada<br>Detall artístic <br>Col·lecció personal, capturat per Marcos Rayo, 2025",
+			"Fusta gravada<br/>Detall artístic <br/>Col·lecció personal, capturat per Marcos Rayo<br/>2025",
 		h: 300,
 		src: "37.JPG",
 		w: 300,
@@ -319,7 +319,7 @@ export const sources: Source[] = [
 	},
 	{
 		caption:
-			"Mossaic a rajoles<br>Detall geomètric <br>Col·lecció personal, capturat per Marcos Rayo, 2025",
+			"Mossaic a rajoles<br/>Detall geomètric <br/>Col·lecció personal, capturat per Marcos Rayo<br/>2025",
 		h: 80,
 		src: "38.JPG",
 		w: 200,
@@ -328,7 +328,7 @@ export const sources: Source[] = [
 	},
 	{
 		caption:
-			"Mosaic irregular<br>Detall de colors i formes <br>Col·lecció personal, capturat per Marcos Rayo, 2025",
+			"Mosaic irregular<br/>Detall de colors i formes <br/>Col·lecció personal, capturat per Marcos Rayo<br/>2025",
 		h: 270,
 		src: "39.JPG",
 		w: 300,
@@ -337,7 +337,7 @@ export const sources: Source[] = [
 	},
 	{
 		caption:
-			"Degradat a pared<br>Detall de colors i textures <br>Col·lecció personal, capturat per Marcos Rayo, 2025",
+			"Degradat a pared<br/>Detall de colors i textures <br/>Col·lecció personal, capturat per Marcos Rayo<br/>2025",
 		h: 270,
 		src: "40.JPG",
 		w: 400,
@@ -346,7 +346,7 @@ export const sources: Source[] = [
 	},
 	{
 		caption:
-			"Pedra antiga<br>Detall de textura i desgast <br>Col·lecció personal, capturat per Marcos Rayo, 2025",
+			"Pedra antiga<br/>Detall de textura i desgast <br/>Col·lecció personal, capturat per Marcos Rayo<br/>2025",
 		h: 250,
 		src: "41.JPG",
 		w: 250,
