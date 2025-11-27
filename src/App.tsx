@@ -14,7 +14,7 @@ function App() {
   }, []);
 
   return (
-    <div className='bg-background'>
+    <div className='bg-background text-foreground'>
       <Loader visible={showLoader} />
       <main id="main">
 
