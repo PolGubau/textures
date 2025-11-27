@@ -324,7 +324,6 @@ const InfiniteGrid: React.FC<InfiniteGridProps> = ({
                 const mouseOffsetY = mouse.y.c - 0.5;
                 const deltaX = scroll.delta.x.c * 5;
                 const deltaY = scroll.delta.y.c * 5;
-                const pressScale = 1.2 + 0.2 * mouse.press.c;
 
                 items.forEach((item) => {
                     // pequeñas oscilaciones en función de la velocidad y posición del ratón
