@@ -1,0 +1,101 @@
+@theme {
+	--color-error-50: oklch(0.98 0.06 4.46); /* #fef2f2 */
+	--color-error-100: oklch(0.97 0.06 4.78); /* #fee2e2 */
+	--color-error-200: oklch(88.45% 0.059 18.33); /* #fecaca */
+	--color-error-300: oklch(80.77% 0.103 19.57); /* #fca5a5 */
+	--color-error-400: oklch(71.06% 0.166 22.22); /* #f87171 */
+	--color-error-500: oklch(63.68% 0.208 25.33); /* #ef4444 */
+	--color-error-600: oklch(57.71% 0.215 27.33); /* #dc2626 */
+	--color-error-700: oklch(50.54% 0.19 27.52); /* #b91c1c */
+	--color-error-800: oklch(44.37% 0.161 26.9); /* #991b1b */
+	--color-error-900: oklch(39.58% 0.133 25.72); /* #7f1d1d */
+	--color-error-950: oklch(0.25 0.08 24); /* #450a0a */
+
+	--color-warning-50: oklch(0.98 0.14 40.23); /* #fff7ed */
+	--color-warning-100: oklch(0.97 0.18 41.77); /* #ffedd5 */
+	--color-warning-200: oklch(0.94 0.23 44.37); /* #fed7aa */
+	--color-warning-300: oklch(0.92 0.27 46.99); /* #fdba74 */
+	--color-warning-400: oklch(0.85 0.33 52.67); /* #fb923c */
+	--color-warning-500: oklch(0.79 0.35 57.79); /* #f97316 */
+	--color-warning-600: oklch(0.75 0.37 61.33); /* #ea580c */
+	--color-warning-700: oklch(0.65 0.33 67.72); /* #c2410c */
+	--color-warning-800: oklch(0.58 0.28 70.64); /* #9a3412 */
+	--color-warning-900: oklch(0.49 0.24 72.94); /* #7c2d12 */
+	--color-warning-950: oklch(0.29 0.17 74.59); /* #431407 */
+
+	--color-success-50: oklch(0.98 0.02 145); /* #F5FDF6 */
+	--color-success-100: oklch(0.95 0.04 145.2); /* #ECFAED */
+	--color-success-200: oklch(0.91 0.08 145.5); /* #D8F5D5 */
+	--color-success-300: oklch(0.86 0.12 145.7); /* #C4F0BC */
+	--color-success-400: oklch(0.8 0.15 145.9); /* #B0EBA4 */
+	--color-success-500: oklch(0.68 0.19 146); /* #4CAF50 */
+	--color-success-600: oklch(0.6 0.18 146.2); /* #42A347 */
+	--color-success-700: oklch(0.52 0.17 146.5); /* #378B3B */
+	--color-success-800: oklch(0.42 0.14 146.7); /* #2C7230 */
+	--color-success-900: oklch(0.32 0.11 147); /* #225926 */
+
+	--color-info-50: oklch(0.97 0.02 240); /* #e9f5fe */
+	--color-info-100: oklch(0.91 0.07 240.5); /* #badefb */
+	--color-info-200: oklch(0.86 0.1 240.8); /* #99cff9 */
+	--color-info-300: oklch(0.8 0.15 241.2); /* #6ab9f7 */
+	--color-info-400: oklch(0.75 0.18 241.5); /* #4dabf5 */
+	--color-info-500: oklch(0.7 0.22 242); /* #2196f3 */
+	--color-info-600: oklch(0.65 0.2 242.3); /* #1e89dd */
+	--color-info-700: oklch(0.55 0.18 242.7); /* #176bad */
+	--color-info-800: oklch(0.45 0.15 243); /* #125386 */
+	--color-info-900: oklch(0.35 0.12 243.5); /* #0e3f66 */
+	--color-info-950: oklch(0.2 0.07 244);
+
+	--color-primary-50: oklch(0.97 0.03 193.5); /* #E6FEFF */
+	--color-primary-100: oklch(0.89 0.14 193.7); /* #8FF2F8 */
+	--color-primary-200: oklch(0.82 0.21 193.3); /* #5DD8DF */
+	--color-primary-300: oklch(0.75 0.22 193.1); /* #3ABCC3 */
+	--color-primary-400: oklch(0.69 0.23 192.9); /* #00A1A7 */
+	--color-primary-500: oklch(0.61 0.22 192.7); /* #00848A */
+	--color-primary-600: oklch(0.52 0.18 192.4); /* #00696E */
+	--color-primary-700: oklch(0.45 0.15 192.2); /* #005C60 */
+	--color-primary-800: oklch(0.36 0.12 192); /* #004346 */
+	--color-primary-900: oklch(0.26 0.08 191.8); /* #002B2D */
+	--color-primary-950: oklch(0.14 0.05 191.6);
+
+	--color-secondary-25: oklch(0.98 0 0);
+	--color-secondary-50: oklch(98.51% 0 0); /* #fafafa */
+	--color-secondary-100: oklch(97.02% 0 0); /* #f5f5f5 */
+	--color-secondary-200: oklch(92.19% 0 0); /* #e5e5e5 */
+	--color-secondary-300: oklch(86.99% 0 0); /* #d4d4d4 */
+	--color-secondary-400: oklch(71.55% 0 0); /* #a3a3a3 */
+	--color-secondary-500: oklch(55.55% 0 0); /* #737373 */
+	--color-secondary-600: oklch(43.86% 0 0); /* #525252 */
+	--color-secondary-700: oklch(37.15% 0 0); /* #404040 */
+	--color-secondary-800: oklch(26.86% 0 0); /* #262626 */
+	--color-secondary-900: oklch(20.46% 0 0); /* #171717 */
+	--color-secondary-950: oklch(14.48% 0 0); /* #0a0a0a */
+
+	--color-background: oklch(1 0 1);
+}
+@theme inline {
+	--color-dark: var(--color-secondary-950);
+	--color-light: var(--color-secondary-25);
+}
+
+:root {
+	--canvas: var(--color-light);
+	--foreground: var(--color-dark);
+}
+
+.dark {
+	--canvas: var(--color-dark);
+	--foreground: var(--color-light);
+}
+
+@theme inline {
+	--color-primary: var(--color-primary-500);
+	--color-secondary: var(--color-secondary-500);
+	--color-info: var(--color-info-500);
+	--color-success: var(--color-success-500);
+	--color-warning: var(--color-warning-500);
+	--color-error: var(--color-error-500);
+
+	--color-canvas: var(--canvas);
+	--color-foreground: var(--foreground);
+}

@@ -1,33 +1,74 @@
 @import "tailwindcss";
 @import "./font.css";
+@import "./colors.css";
 
-html {
-    font-size: calc((1 / 1440) * 100vw);
-    overflow: hidden;
-}
+@custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
 
+html,
 body {
-    font-family: 'Figtree';
-    line-height: 1.21;
-    font-weight: 400;
-    background-color: #111111;
-    color: #ffffff;
-    margin: 0;
-    font-size: 16;
-    -moz-osx-font-smoothing: grayscale;
-    -webkit-font-smoothing: antialiased;
-    overscroll-behavior-y: none;
+	@apply bg-canvas text-foreground;
+
+	@media (prefers-color-scheme: dark) {
+		color-scheme: dark;
+	}
+}
+:root {
+	--vh: 1vh;
+	font-synthesis: none;
+	text-rendering: optimizeLegibility;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	interpolate-size: allow-keywords;
+	font-family: "Figtree", sans-serif;
+	line-height: 1.21;
+	font-weight: 400;
+	background-color: #111111;
+	color: #ffffff;
+	margin: 0;
+	font-size: 16;
+	overscroll-behavior-y: none;
+}
+/* Support the new `dvh` unit so that dynamically shrinking iOS Safari UI works */
+@supports (height: 1dvh) {
+	:root {
+		--vh: 1dvh;
+	}
+}
+@media all and (display-mode: standalone) {
+	:root {
+		--vh: 1vh;
+	}
 }
 
 a {
-    text-decoration: none;
-    color: inherit;
+	color: inherit;
+	text-decoration: none;
 }
 
 html.dragging #hero {
-    cursor: grabbing;
+	cursor: grabbing;
 }
 
-.custom-shadow {
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+.outside-viewport {
+	visibility: hidden;
+	scale: 0.5;
+	transition: all 0.3s ease-in-out;
+}
+
+.inside-viewport {
+	visibility: visible;
+	scale: 1;
+	transition: all 0.3s ease-in-out;
+	animation: appear 0.5s ease-in-out forwards;
+}
+
+@keyframes appear {
+	from {
+		opacity: 0;
+		transform: scale(0.95);
+	}
+	to {
+		opacity: 1;
+		transform: scale(1);
+	}
 }
